@@ -1,0 +1,7 @@
+#SPDX-License-Identifier: MIT-0
+---
+# defaults file for deploy-eduplateforme
+repo_url: 'https://github.com/ibrahimbakayoko/edu-keepalive.git'
+#repo_url: 'https://github.com/ibrahimbakayoko/eduplateforme.git'
+app_dir: '/opt/eduplateforme'
+branch: 'main'

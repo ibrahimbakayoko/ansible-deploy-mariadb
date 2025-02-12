@@ -1,0 +1,29 @@
+---
+# Fichier : tasks/main.yml
+
+- name: Mettre à jour les paquets
+  apt:
+    update_cache: yes
+    upgrade: yes
+
+- name: Installer MariaDB
+  apt:
+    name: "{{ mariadb_package }}"
+    state: present
+    update_cache: yes
+
+- name: Démarrer et activer le service MariaDB
+  systemd:
+    name: "{{ mariadb_service }}"
+    state: started
+    enabled: yes
+
+- name: Vérifier que MariaDB est en cours d'exécution
+  systemd:
+    name: "{{ mariadb_service }}"
+    state: started
+  register: mariadb_status
+
+- name: Afficher l'état du service MariaDB
+  debug:
+    msg: "Le service MariaDB est {{ mariadb_status.state }}"

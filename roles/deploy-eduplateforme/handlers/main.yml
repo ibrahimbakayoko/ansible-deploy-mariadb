@@ -1,0 +1,9 @@
+#SPDX-License-Identifier: MIT-0
+---
+# handlers/main.yml
+
+- name: Redémarrer Docker
+  service:
+    name: docker
+    state: restarted
+

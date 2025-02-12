@@ -1,0 +1,7 @@
+---
+# Fichier : handlers/main.yml
+
+- name: Redémarrer MariaDB
+  systemd:
+    name: "{{ mariadb_service }}"
+    state: restarted

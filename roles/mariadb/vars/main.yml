@@ -1,0 +1,4 @@
+---
+# Fichier : vars/main.yml
+
+mariadb_root_password: "root"  # Par exemple, un mot de passe root pour MariaDB

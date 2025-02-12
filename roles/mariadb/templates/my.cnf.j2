@@ -1,0 +1,11 @@
+[mysqld]
+bind-address = 0.0.0.0
+
+# Galera settings
+wsrep_on=ON
+wsrep_provider=/usr/lib/galera/libgalera_smm.so
+wsrep_cluster_name={{ galera_cluster_name }}
+wsrep_cluster_address={{ galera_cluster_nodes }}
+wsrep_node_address={{ galera_node_address }}
+wsrep_node_name={{ inventory_hostname }}
+wsrep_sst_method={{ galera_sst_method }}

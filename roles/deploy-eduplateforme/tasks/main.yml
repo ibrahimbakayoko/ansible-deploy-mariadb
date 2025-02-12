@@ -1,0 +1,69 @@
+# SPDX-License-Identifier: MIT-0
+---
+# tasks/main.yml
+
+- name: Installer Docker
+  apt:
+    name: docker.io
+    state: present
+    update_cache: yes
+
+- name: Installer pip
+  apt:
+    name: pip
+    state: present
+    update_cache: yes
+
+- name: Désinstaller docker-compose si installé avec pip
+  command: pip uninstall -y docker-compose
+  ignore_errors: yes
+
+- name: Définir la version de Docker Compose
+  set_fact:
+    compose_version: "1.29.2"  # Remplacez par la version souhaitée
+
+- name: Définir les variables uname
+  set_fact:
+    uname_s: "{{ lookup('pipe', 'uname -s') }}"
+    uname_m: "{{ lookup('pipe', 'uname -m') }}"
+
+- name: Télécharger Docker Compose
+  get_url:
+    url: "https://github.com/docker/compose/releases/download/{{ compose_version }}/docker-compose-{{ uname_s }}-{{ uname_m }}"
+    dest: "/usr/local/bin/docker-compose"
+    mode: '0755'
+
+- name: Vérifier si Docker fonctionne
+  command: docker --version
+  register: docker_version
+  failed_when: docker_version.rc != 0
+  changed_when: false
+
+- name: Créer le répertoire pour l'application (si nécessaire)
+  file:
+    path: '{{ app_dir }}'
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Cloner le dépôt de l'application Django
+  git:
+    repo: '{{ repo_url }}'
+    dest: '{{ app_dir }}'
+    version: '{{ branch }}'
+
+- name: Démarrer l'application avec Docker Compose
+  command: docker-compose up -d
+  args:
+    chdir: '{{ app_dir }}/eduplateforme'
+
+- name: Vérifier que l'application fonctionne
+  command: docker-compose ps
+  args:
+    chdir: '{{ app_dir }}/eduplateforme'
+  register: compose_status
+
+- name: Afficher le statut des conteneurs
+  debug:
+    var: compose_status.stdout

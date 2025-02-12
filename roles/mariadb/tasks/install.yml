@@ -1,0 +1,26 @@
+---
+- name: Ajouter la clé GPG de MariaDB
+  apt_key:
+    url: https://mariadb.org/mariadb_release_signing_key.asc
+    state: present
+
+- name: Ajouter le dépôt MariaDB pour Debian 11
+  apt_repository:
+    repo: "deb [arch=amd64] http://ftp.igh.cnrs.fr/pub/mariadb/repo/10.6/debian bullseye main"
+    state: present
+    filename: mariadb
+
+- name: Mettre à jour le cache APT
+  apt:
+    update_cache: yes
+
+- name: Installer MariaDB
+  apt:
+    name: mariadb-server
+    state: present
+
+- name: Démarrer et activer MariaDB
+  service:
+    name: mariadb
+    state: started
+    enabled: yes

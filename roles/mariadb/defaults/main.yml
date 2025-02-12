@@ -1,0 +1,5 @@
+---
+# Fichier : defaults/main.yml
+
+mariadb_package: mariadb-server  # Paquet à installer
+mariadb_service: mariadb         # Service à démarrer

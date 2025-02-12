@@ -1,0 +1,29 @@
+---
+- name: Définir le mot de passe root de MariaDB
+  mysql_user:
+    name: root
+    password: "{{ mariadb_root_password }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Créer la base de données `eduplateforme`
+  mysql_db:
+    name: eduplateforme
+    state: present
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"
+
+- name: Créer l'utilisateur `eduplateforme`
+  mysql_user:
+    name: eduplateforme
+    password: "{{ mariadb_user_password }}"
+    priv: "eduplateforme.*:ALL"
+    host: "%"
+    state: present
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"
+
+- name: Appliquer les privilèges
+  mysql_query:
+    query: "FLUSH PRIVILEGES"
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"

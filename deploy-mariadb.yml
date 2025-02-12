@@ -1,0 +1,6 @@
+---
+- name: Déploiement de MariaDB
+  hosts: database_servers
+  become: yes
+  roles:
+    - mariadb

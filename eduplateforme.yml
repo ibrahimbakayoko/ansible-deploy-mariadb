@@ -1,0 +1,6 @@
+---
+- name: Déployer l'application Django sur VM
+  hosts: eduplateformeserv
+  become: yes
+  roles:
+    - deploy-eduplateforme

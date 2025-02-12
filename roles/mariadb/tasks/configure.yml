@@ -1,0 +1,6 @@
+---
+- name: Configurer MariaDB avec un fichier my.cnf
+  template:
+    src: my.cnf.j2
+    dest: /etc/mysql/my.cnf
+  notify: Redémarrer MariaDB
